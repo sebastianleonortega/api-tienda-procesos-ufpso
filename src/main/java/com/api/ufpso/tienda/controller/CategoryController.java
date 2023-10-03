@@ -42,7 +42,12 @@ public class CategoryController {
     }
 
     @GetMapping("category/article/{id}")
-    public ResponseEntity<List<Article>> getCategoriesByArticle(@PathVariable Long id){
-        return ResponseEntity.ok(categoryService.getAllArticleByCategory(id));
+    public ResponseEntity<List<Article>> getAllArticlesByCategory(@PathVariable Long id) {
+        List<Article> articles = categoryService.getAllArticleByCategory(id);
+        if (articles != null) {
+            return ResponseEntity.ok(articles);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

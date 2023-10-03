@@ -47,10 +47,10 @@ public class CategoryService {
     }
 
     public List<Article> getAllArticleByCategory (Long id){
-        Optional<Category> categoryExist = categoryRepository.findById(id);
-        if (categoryExist.isEmpty()){
-            return null;
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category != null){
+            return categoryRepository.findAllArticlesByCategory(category);
         }
-        return categoryRepository.getCategoriesByArticle(id);
+        return null;
     }
 }
