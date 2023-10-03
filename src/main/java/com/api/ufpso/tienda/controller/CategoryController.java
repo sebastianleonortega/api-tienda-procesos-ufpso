@@ -1,5 +1,6 @@
 package com.api.ufpso.tienda.controller;
 
+import com.api.ufpso.tienda.model.Article;
 import com.api.ufpso.tienda.model.Category;
 import com.api.ufpso.tienda.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,8 @@ public class CategoryController {
         return new ResponseEntity(categoryService.delete(id), HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("category/article/{id}")
+    public ResponseEntity<List<Article>> getCategoriesByArticle(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.getAllArticleByCategory(id));
+    }
 }

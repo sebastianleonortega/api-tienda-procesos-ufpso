@@ -1,5 +1,6 @@
 package com.api.ufpso.tienda.service;
 
+import com.api.ufpso.tienda.model.Article;
 import com.api.ufpso.tienda.model.Category;
 import com.api.ufpso.tienda.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,13 @@ public class CategoryService {
         }
         categoryRepository.delete(categoryExist.get());
         return true;
+    }
+
+    public List<Article> getAllArticleByCategory (Long id){
+        Optional<Category> categoryExist = categoryRepository.findById(id);
+        if (categoryExist.isEmpty()){
+            return null;
+        }
+        return categoryRepository.getCategoriesByArticle(id);
     }
 }
