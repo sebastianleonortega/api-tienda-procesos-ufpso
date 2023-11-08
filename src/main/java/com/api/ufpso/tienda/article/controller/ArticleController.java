@@ -1,7 +1,7 @@
-package com.api.ufpso.tienda.controller;
+package com.api.ufpso.tienda.article.controller;
 
-import com.api.ufpso.tienda.model.Article;
-import com.api.ufpso.tienda.service.ArticleService;
+import com.api.ufpso.tienda.article.model.Article;
+import com.api.ufpso.tienda.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
-package com.api.ufpso.tienda.repository;
+package com.api.ufpso.tienda.category.repository;
 
-import com.api.ufpso.tienda.model.Article;
-import com.api.ufpso.tienda.model.Category;
+import com.api.ufpso.tienda.article.model.Article;
+import com.api.ufpso.tienda.category.model.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

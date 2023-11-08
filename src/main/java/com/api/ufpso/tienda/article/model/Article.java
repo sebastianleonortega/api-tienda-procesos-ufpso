@@ -1,5 +1,6 @@
-package com.api.ufpso.tienda.model;
+package com.api.ufpso.tienda.article.model;
 
+import com.api.ufpso.tienda.category.model.Category;
 import jakarta.persistence.*;
 import lombok.Data;
 

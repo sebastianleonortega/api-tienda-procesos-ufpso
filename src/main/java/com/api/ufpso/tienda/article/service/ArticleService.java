@@ -1,7 +1,7 @@
-package com.api.ufpso.tienda.service;
+package com.api.ufpso.tienda.article.service;
 
-import com.api.ufpso.tienda.model.Article;
-import com.api.ufpso.tienda.repository.ArticleRepository;
+import com.api.ufpso.tienda.article.model.Article;
+import com.api.ufpso.tienda.article.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
