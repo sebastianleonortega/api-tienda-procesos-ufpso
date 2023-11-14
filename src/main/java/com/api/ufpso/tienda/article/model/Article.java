@@ -24,7 +24,6 @@ public class Article {
     @Size(max = 255, message = "description max 255 characters")
     private String description;
     @NotNull(message = "stock is required")
-    @Size(min = 5, max = 15, message = "stock max 15 characters and min 1")
     private Number stock;
     @NotNull(message = "price is required")
     @Size(min = 5, max = 15, message = "price max 15 characters and min 1")

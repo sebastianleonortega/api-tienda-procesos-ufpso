@@ -1,5 +1,6 @@
 package com.api.ufpso.tienda.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,7 +15,8 @@ public class MainSecurity  {
             "/auth/login",
     };
 
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.cors()
                 .and()
                 .csrf()
@@ -24,6 +26,5 @@ public class MainSecurity  {
                 .anyRequest().permitAll());
         return http.build();
     }
-
 
 }
