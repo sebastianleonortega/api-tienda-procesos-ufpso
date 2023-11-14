@@ -11,37 +11,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("category")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("category")
+    @GetMapping("/all")
     public ResponseEntity<List<Category>> finAll(){
         return ResponseEntity.ok(categoryService.findAllCategory());
     }
 
-    @GetMapping("category/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
-    @PostMapping("category")
+    @PostMapping("/create")
     public ResponseEntity<Category> create(@RequestBody Category category){
         return new ResponseEntity<>(categoryService.CreateCategory(category), HttpStatus.CREATED);
     }
 
-    @PutMapping("category/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Category> update(@RequestBody Category category, @PathVariable Long id){
         return new ResponseEntity(categoryService.updateCategory(category, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         return new ResponseEntity(categoryService.delete(id), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("category/article/{id}")
+    @GetMapping("/article/{id}")
     public ResponseEntity<List<Article>> getAllArticlesByCategory(@PathVariable Long id) {
         List<Article> articles = categoryService.getAllArticleByCategory(id);
         if (articles != null) {
