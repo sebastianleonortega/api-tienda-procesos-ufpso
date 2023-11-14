@@ -1,5 +1,6 @@
 package com.api.ufpso.tienda.article.model;
 
+import com.api.ufpso.tienda.User.model.User;
 import com.api.ufpso.tienda.category.model.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -34,4 +35,8 @@ public class Article {
     @JoinColumn(name = "category")
     private Category category;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
 }

@@ -2,6 +2,7 @@ package com.api.ufpso.tienda.User.controller;
 
 import com.api.ufpso.tienda.User.model.User;
 import com.api.ufpso.tienda.User.service.UserService;
+import com.api.ufpso.tienda.security.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,38 +16,63 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+import static org.springframework.http.ResponseEntity.status;
+
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok(userService.getUserById(id));
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id, @RequestHeader(value = "Authorization")String token){
+        if(jwtUtil.getKey(token)==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+        User user = userService.getUserById(id);
+
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
     };
 
-    @PostMapping("users")
+    @PostMapping("/register")
     public ResponseEntity<User>  Create(@Valid @RequestBody User user){
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
 
     }
 
-    @PutMapping("users/{id}")
-    public ResponseEntity<User>  update(@Valid @RequestBody User user, @PathVariable Long id){
-        return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<?>  update(@Valid @RequestBody User user, @PathVariable Long id, @RequestHeader(value = "Authorization")String token){
+        if(jwtUtil.getKey(token)==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+        if (user != null) {
+            return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
     }
 
-    @DeleteMapping("users/{id}")
-    public ResponseEntity<String>  delete(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String>  delete(@PathVariable Long id,  @RequestHeader(value = "Authorization")String token){
+        if(jwtUtil.getKey(token)==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         return new ResponseEntity(userService.delete(id), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("users")
+    @GetMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAllUsers());
     }
@@ -65,4 +91,10 @@ public class UserController {
         });
         return errors;
     }
+
+    @PostMapping(value = "/auth/login")
+    public ResponseEntity login(@RequestBody User user) {
+        return userService.login(user.getEmail(), user.getPassword());
+    }
 }
+

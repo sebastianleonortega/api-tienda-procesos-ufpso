@@ -32,11 +32,11 @@ public class User {
     @Size(max = 15, min = 10, message = "Phone max 15 characters and min 10")
     private String phone;
 
-    @NotNull(message = "Email is required")
+   // @NotNull(message = "Email is required")
     @Email
     private String email;
 
-    @NotNull(message = "password is required")
+    //@NotNull(message = "password is required")
     @Size(min = 8, message = "Password min 8 characters")
     private String password;
 }
