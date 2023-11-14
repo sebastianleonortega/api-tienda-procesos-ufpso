@@ -2,6 +2,7 @@ package com.api.ufpso.tienda.User.service;
 
 import com.api.ufpso.tienda.User.model.User;
 import com.api.ufpso.tienda.User.repository.UserRepository;
+import com.api.ufpso.tienda.exception.NotFoundException;
 import com.api.ufpso.tienda.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class UserService {
             existingUser.setPhone(user.getPhone());
             return userRepository.save(existingUser);
         }
-        throw new RuntimeException("No existe el usuario");
+        throw new NotFoundException("No existe el usuario");
     }
 
     public Boolean delete(Long id){

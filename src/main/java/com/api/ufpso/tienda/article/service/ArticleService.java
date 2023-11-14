@@ -2,6 +2,7 @@ package com.api.ufpso.tienda.article.service;
 
 import com.api.ufpso.tienda.article.model.Article;
 import com.api.ufpso.tienda.article.repository.ArticleRepository;
+import com.api.ufpso.tienda.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class ArticleService {
     public Article updateArticle(Article articulo, Long id){
         Optional<Article> articleExist = articleRepository.findById(id);
         if(articleExist.isEmpty()){
-            return null;
+            throw new NotFoundException("Articulo no encontrado");
         }
         articleExist.get().setName(articulo.getName());
         articleExist.get().setDescription(articulo.getDescription());
@@ -41,7 +42,7 @@ public class ArticleService {
     public Boolean delete(Long id){
         Optional<Article> articleExist = articleRepository.findById(id);
         if(articleExist.isEmpty()){
-            return false;
+            throw new NotFoundException("Articulo no encontrado");
         }
         articleRepository.delete(articleExist.get());
         return true;
