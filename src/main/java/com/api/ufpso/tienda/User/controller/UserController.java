@@ -73,9 +73,16 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<?> findAll(@RequestHeader(value = "Authorization") String token) {
+        if (jwtUtil.getKey(token) == null) {
+            // Devuelve un objeto JSON con el mensaje de error
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token no válido"));
+        }
+
+        // Si el token es válido, devuelve la lista de usuarios
         return ResponseEntity.ok(userService.findAllUsers());
     }
+
 
 
 

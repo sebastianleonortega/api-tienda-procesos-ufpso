@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
@@ -21,7 +22,11 @@ public class ArticleController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Article>> findAll(){
+    public ResponseEntity<?> findAll(@RequestHeader(value = "Authorization") String token){
+        if (jwtUtil.getKey(token) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token no válido"));
+
+        }
         return ResponseEntity.ok(articleService.findAllArticle());
     }
 

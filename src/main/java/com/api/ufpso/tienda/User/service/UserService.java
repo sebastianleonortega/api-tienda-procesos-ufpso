@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -65,7 +66,7 @@ public class UserService {
 
             if (user != null && Objects.equals(password, user.getPassword())) {
                 String token = jwtUtil.create(String.valueOf(user.getId()), user.getEmail());
-                return ResponseEntity.ok(token);
+                return ResponseEntity.ok().body(Map.of("token", token));
             } else {
                 // User not found or password doesn't match
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas, vuelva a intentar");
