@@ -22,21 +22,27 @@ public class ArticleController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/all")
-    public ResponseEntity<?> findAll(@RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<?> findAll(@RequestHeader(value = "Authorization") String token) {
         if (jwtUtil.getKey(token) == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token no válido"));
 
+        } else {
+            return ResponseEntity.ok(articleService.findAllArticle());
         }
-        return ResponseEntity.ok(articleService.findAllArticle());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable Long id){
-        return ResponseEntity.ok(articleService.getArticleById(id));
+    public ResponseEntity<?> getArticleById(@PathVariable Long id, @RequestHeader(value = "Authorization") String token) {
+        if (jwtUtil.getKey(token) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token no válido"));
+
+        } else {
+            return ResponseEntity.ok(articleService.getArticleById(id));
+        }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Article article, @RequestHeader(value = "Authorization")String token) {
+    public ResponseEntity<?> create(@RequestBody Article article, @RequestHeader(value = "Authorization") String token) {
         if (jwtUtil.getKey(token) == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         } else {
@@ -45,13 +51,21 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Article> update(@RequestBody Article article, @PathVariable Long id){
-        return new ResponseEntity<>(articleService.updateArticle(article, id), HttpStatus.OK);
+    public ResponseEntity<?> update(@RequestBody Article article, @PathVariable Long id, @RequestHeader(value = "Authorization") String token) {
+        if (jwtUtil.getKey(token) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        } else {
+            return new ResponseEntity<>(articleService.updateArticle(article, id), HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<String> delete(@PathVariable Long id){
-        return new ResponseEntity(articleService.delete(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader(value = "Authorization") String token) {
+        if (jwtUtil.getKey(token) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        } else {
+            return new ResponseEntity(articleService.delete(id), HttpStatus.NO_CONTENT);
+        }
     }
 
 }
