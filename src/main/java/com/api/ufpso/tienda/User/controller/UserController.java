@@ -1,6 +1,7 @@
 package com.api.ufpso.tienda.User.controller;
 
 import com.api.ufpso.tienda.User.model.User;
+import com.api.ufpso.tienda.User.repository.UserRepository;
 import com.api.ufpso.tienda.User.service.UserService;
 import com.api.ufpso.tienda.security.JwtUtil;
 import jakarta.validation.Valid;
@@ -20,6 +21,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -42,9 +45,11 @@ public class UserController {
     };
 
     @PostMapping("/register")
-    public ResponseEntity<User>  Create(@Valid @RequestBody User user){
+    public ResponseEntity<?> Create(@Valid @RequestBody User user){
+        User userdb = userRepository.findByEmail(user.getEmail());
+        if(userdb != null)
+            return ResponseEntity.badRequest().body("Correo ya existente");
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
-
     }
 
     @PutMapping("/{id}")
@@ -96,7 +101,7 @@ public class UserController {
 
     @PostMapping(value = "/auth/login")
     public ResponseEntity login(@RequestBody User user) {
-        return userService.login(user.getEmail(), user.getPassword());
+        return ResponseEntity.ok(userService.login(user.getEmail(), user.getPassword()));
     }
 }
 
